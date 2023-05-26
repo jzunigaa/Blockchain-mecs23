@@ -104,12 +104,12 @@ public:
     return block_list[id];
   }
 
-  vector<Transferencia> find_by_name(string name){//O(n
+  vector<Transferencia> find_by_name(string name){//O(1)
     vector<Transferencia> output;
     unordered_map<string, vector<Transferencia> >::iterator it;
     it = this->bc_name_id.find(name); //O(1)
-    for(Transferencia t : it->second)
-      output.push_back(t);
+    if(it != bc_name_id.end())
+      output = it->second;
     return output;
   }
 
