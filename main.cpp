@@ -12,7 +12,7 @@ int main() {
     Blockchain block_chain;
     Usuario u1("Marvin", "Minsky", "71480315");
     Usuario u2("Juan", "Perez", "12789345");
-    Usuario u3("Ana", "Holeman", "78934516");
+    Usuario u3("Ana", "Holeman", "78955516");
     Usuario u4("Pepito", "Grillo", "78934516");
     Transferencia t1(u1, u2, 1000.0, "18-05-2023", "Barranco");
     Transferencia t2(u1, u3, 200.0, "19-05-2023", "Surco");
@@ -46,6 +46,16 @@ int main() {
     int c = 0;
     vector<Transferencia> transferencias = block_chain.find_by_name(name);
     cout << "+++ Transferencias de " + name << " +++" << endl;
+    for(Transferencia t : transferencias){
+        cout << "#" << ++c << endl;
+        cout << t.toString() << endl;
+    }
+
+    //Busqueda por DNI (obtener Transferencias por DNI)
+    string dni = "78955516";
+    c = 0;
+    transferencias = block_chain.find_by_dni(dni);
+    cout << "+++ Transferencias del DNI: " + dni << " +++" << endl;
     for(Transferencia t : transferencias){
         cout << "#" << ++c << endl;
         cout << t.toString() << endl;
