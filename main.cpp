@@ -84,5 +84,34 @@ int main() {
         }
     }
 
+  // Búsqueda por rango de monto
+  long begin = 700;
+  long end = 900;
+  int c2 = 0;
+  vector<Transferencia> transferencias_rango =
+      block_chain.find_by_range(begin, end);
+  cout << "+++ Transferencias dentro del rango de monto [" << begin << ", "
+       << end << "] +++" << endl;
+  for (Transferencia t : transferencias_rango) {
+    cout << "#" << ++c2 << endl;
+    cout << t.toString() << endl;
+  }
+
+  // Búsqueda máximo
+  string name_max = "Pepito";
+  int c3 = 0;
+  Transferencia transferencia_max = block_chain.find_max_by_name(name_max);
+  cout << "+++ Transferencia del monto maximo +++" << endl;
+  cout << "#" << ++c3 << endl;
+  cout << transferencia_max.toString() << endl;
+
+  // Búsqueda mínimo
+  string name_min = "Pepito";
+  int c4 = 0;
+  Transferencia transferencia_min = block_chain.find_min_by_name(name_min);
+  cout << "+++ Transferencia del monto minimo +++" << endl;
+  cout << "#" << ++c4 << endl;
+  cout << transferencia_min.toString() << endl;
+
     return 0;
 }

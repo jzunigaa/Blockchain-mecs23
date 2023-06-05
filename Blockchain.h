@@ -192,7 +192,60 @@ public:
         output.push_back(it->second);
     }
     return output;
-}
+    }
+
+  // Búsqueda por rango
+  vector<Transferencia> find_by_range(long begin, long end) {
+    vector<Transferencia> output;
+
+    for (map<long, Blockchain>::iterator blockIt = block_list.begin();
+         blockIt != block_list.end(); ++blockIt) {
+      Blockchain &block = blockIt->second;
+      for (vector<Transferencia>::iterator transIt = block.trans_list.begin();
+           transIt != block.trans_list.end(); ++transIt) {
+        Transferencia &transaction = *transIt;
+        if (transaction.getMonto() >= begin && transaction.getMonto() <= end) {
+          output.push_back(transaction);
+        }
+      }
+    }
+
+    return output;
+  }
+
+  // Búsqueda del mínimo por usuario
+  Transferencia find_max_by_name(string name) {
+    Transferencia maxTrans;
+    unordered_map<string, vector<Transferencia>>::iterator it =
+        bc_name_id.find(name);
+    if (it != bc_name_id.end()) {
+      vector<Transferencia> &trans_list = it->second;
+      maxTrans = trans_list[0];
+      for (Transferencia &trans : trans_list) {
+        if (trans.getMonto() > maxTrans.getMonto()) {
+          maxTrans = trans;
+        }
+      }
+    }
+    return maxTrans;
+  }
+
+  // Búsqueda del máximo por usuario
+  Transferencia find_min_by_name(string name) {
+    Transferencia minTrans;
+    unordered_map<string, vector<Transferencia>>::iterator it =
+        bc_name_id.find(name);
+    if (it != bc_name_id.end()) {
+      vector<Transferencia> &trans_list = it->second;
+      minTrans = trans_list[0];
+      for (Transferencia &trans : trans_list) {
+        if (trans.getMonto() < minTrans.getMonto()) {
+          minTrans = trans;
+        }
+      }
+    }
+    return minTrans;
+  }
 
   // Blockchain find_by_range(long begin, long end){
 
