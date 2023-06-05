@@ -61,6 +61,28 @@ int main() {
         cout << t.toString() << endl;
     }
 
+    //Busqueda por fecha (obtener Transferencias por fecha)
+    string date = "23-05-2023";
+    c = 0;
+    transferencias = block_chain.find_by_date(date);
+    cout << "+++ Transferencias en la fecha: " + date << " +++" << endl;
+    for(Transferencia t : transferencias){
+        cout << "#" << ++c << endl;
+        cout << t.toString() << endl;
+    }
+
+    //Busqueda por rango de fechas (obtener Transferencias en un rango de fechas)
+    string startDate = "19-05-2023";
+    string endDate = "23-05-2023";
+    c = 0;
+    vector<vector<Transferencia>> transferencias_list = block_chain.getTransactionsInRange(startDate,endDate);
+    cout << "+++ Transferencias realizadas entre " + startDate <<" y "<<endDate << " +++" << endl;
+    for(vector<Transferencia> t_list : transferencias_list){
+        for(Transferencia t : t_list){
+            cout << "#" << ++c << endl;
+            cout << t.toString() << endl;
+        }
+    }
 
     return 0;
 }

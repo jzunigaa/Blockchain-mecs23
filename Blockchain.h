@@ -20,6 +20,7 @@ private:
   vector<Transferencia> trans_list;
   unordered_map<string, vector<Transferencia> > bc_name_id;
   unordered_map<string, vector<Transferencia> > bc_dni_id;
+  map<string,vector<Transferencia> > bc_date_id;
 
 private:
   string getHashCode(string data){
@@ -91,6 +92,22 @@ private:
     }
   }
 
+  void addMapByDate(vector<Transferencia> trans_list){
+    map<string,vector<Transferencia> >::iterator it;
+    for(int i = 0; i < trans_list.size(); i++){
+        string key = trans_list[i].getFecha();
+        it = bc_date_id.find(key);
+        if(it != bc_date_id.end()){
+            it->second.push_back(trans_list[i]);
+        }
+        else{
+            vector<Transferencia> in_list;
+            in_list.push_back(trans_list[i]);
+            bc_date_id.insert(make_pair(key,in_list));
+        }
+    }
+  }
+
 public:
   map<long, Blockchain> block_list; //it works like a BST
 
@@ -110,6 +127,7 @@ public:
     new_block.nonce = mining(new_block.bc_id);
     addMapByName(trans_list);
     addMapByDni(trans_list);
+    addMapByDate(trans_list);
 
     // for(int i = 0; i < trans_list.size(); i++){
     //   if(i > 0) continue;
@@ -151,6 +169,30 @@ public:
         output = it->second;
     return output;
   }
+
+  vector<Transferencia> find_by_date(string date){
+    vector<Transferencia> output;
+    map<string, vector<Transferencia> >::iterator it;
+    it = this->bc_date_id.find(date);
+    if(it != bc_date_id.end()){
+        output = it->second;
+    }
+    return output;
+  }
+
+  // Función para buscar los montos de transacciones en un rango de fechas
+  vector<vector<Transferencia>> getTransactionsInRange(string startDate, string endDate) {
+    vector<vector<Transferencia>> output;
+    map<string, vector<Transferencia> >::iterator start;
+    map<string, vector<Transferencia> >::iterator _end;
+   // map<string, vector<Transferencia> >::iterator it;
+    start = this->bc_date_id.lower_bound(startDate);
+    _end = this->bc_date_id.upper_bound(endDate);
+    for ( map<string, vector<Transferencia> >::iterator it = start; it != _end; ++it) {
+        output.push_back(it->second);
+    }
+    return output;
+}
 
   // Blockchain find_by_range(long begin, long end){
 
