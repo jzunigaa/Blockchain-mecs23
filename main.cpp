@@ -3,6 +3,7 @@
 #include "Usuario.h"
 #include "Transferencia.h"
 #include "Blockchain.h"
+#include "rapidcsv.h"
 #define FOR(i, n) for(int i=0; i<n; i++)
 using namespace std;
 
@@ -10,31 +11,45 @@ using namespace std;
 
 int main() {
     Blockchain block_chain;
-    Usuario u1("Marvin", "Minsky", "71480315");
-    Usuario u2("Juan", "Perez", "12789345");
-    Usuario u3("Ana", "Holeman", "78955516");
-    Usuario u4("Pepito", "Grillo", "78934516");
-    Transferencia t1(u1, u2, 1000.0, "18-05-2023", "Barranco");
-    Transferencia t2(u1, u3, 200.0, "19-05-2023", "Surco");
-    Transferencia t3(u1, u2, 520.0, "21-05-2023", "San Isidro");
-    Transferencia t4(u3, u1, 890.0, "23-05-2023", "SJM");
-    Transferencia t5(u3, u4, 2500.0, "25-05-2023", "Magdalena");
+    rapidcsv::Document doc("data_project.csv");
+	 rapidcsv::Document tra("transferenci.csv");
+    
+    vector<Usuario>	    people;
+	 vector<Transferencia> trans_listALL;
+
+	 vector<string> names	  = doc.GetColumn<string>("first_name");
+	 vector<string> lastnames = doc.GetColumn<string>("last_name");
+	 vector<string> dnis	     = doc.GetColumn<string>("dni");
+
+	 vector<float> monto	 = tra.GetColumn<float>("monto");
+	 vector<string> fecha = tra.GetColumn<string>("fecha");
+	 vector<string> lugar = tra.GetColumn<string>("lugar");
+    
+    for (size_t i = 0; i < names.size(); ++i) {
+		Usuario user(names[i], lastnames[i], dnis[i]);
+		people.push_back(user);
+	 }
+    
+    for (size_t i = 0; i < monto.size(); ++i) {
+		Transferencia transfer(people[i], people[i + 1], monto[i], fecha[i], lugar[i]);
+		trans_listALL.push_back(transfer);
+	}
 
     vector<Transferencia> trans_list;
-    trans_list.push_back(t1);
-    trans_list.push_back(t2);
-    trans_list.push_back(t3);
-    trans_list.push_back(t4);
+    trans_list.push_back(trans_listALL[0]);
+    trans_list.push_back(trans_listALL[1]);
+    trans_list.push_back(trans_listALL[2]);
+    trans_list.push_back(trans_listALL[3]);
     block_chain.add_block(trans_list);
 
     vector<Transferencia> trans_list2;
-    trans_list2.push_back(t1);
-    trans_list2.push_back(t3);
+    trans_list2.push_back(trans_listALL[0]);
+    trans_list2.push_back(trans_listALL[2]);
     block_chain.add_block(trans_list2);
 
     vector<Transferencia> trans_list3;
-    trans_list3.push_back(t5);
-    trans_list3.push_back(t1);
+    trans_list3.push_back(trans_listALL[4]);
+    trans_list3.push_back(trans_listALL[0]);
     block_chain.add_block(trans_list3);
 
     //Mostrar Bloques
@@ -42,7 +57,7 @@ int main() {
         cout << item.second.getData() << endl;
 
     //Busqueda por nombre (obtener Transferencias por nombre)
-    string name = "Ana";
+    string name = "Guy";
     int c = 0;
     vector<Transferencia> transferencias = block_chain.find_by_name(name);
     cout << "+++ Transferencias de " + name << " +++" << endl;
@@ -52,7 +67,7 @@ int main() {
     }
 
     //Busqueda por DNI (obtener Transferencias por DNI)
-    string dni = "78955516";
+    string dni = "73520232";
     c = 0;
     transferencias = block_chain.find_by_dni(dni);
     cout << "+++ Transferencias del DNI: " + dni << " +++" << endl;
@@ -62,7 +77,7 @@ int main() {
     }
 
     //Busqueda por fecha (obtener Transferencias por fecha)
-    string date = "23-05-2023";
+    string date = "11/4/2022";
     c = 0;
     transferencias = block_chain.find_by_date(date);
     cout << "+++ Transferencias en la fecha: " + date << " +++" << endl;
@@ -72,8 +87,8 @@ int main() {
     }
 
     //Busqueda por rango de fechas (obtener Transferencias en un rango de fechas)
-    string startDate = "19-05-2023";
-    string endDate = "23-05-2023";
+    string startDate = "19/05/2020";
+    string endDate = "23/05/2023";
     c = 0;
     vector<vector<Transferencia>> transferencias_list = block_chain.getTransactionsInRange(startDate,endDate);
     cout << "+++ Transferencias realizadas entre " + startDate <<" y "<<endDate << " +++" << endl;
@@ -84,9 +99,9 @@ int main() {
         }
     }
 
-  // Búsqueda por rango de monto
+  // BÃºsqueda por rango de monto
   long begin = 700;
-  long end = 900;
+  long end = 1900;
   int c2 = 0;
   vector<Transferencia> transferencias_rango =
       block_chain.find_by_range(begin, end);
@@ -97,16 +112,16 @@ int main() {
     cout << t.toString() << endl;
   }
 
-  // Búsqueda máximo
-  string name_max = "Pepito";
+  // BÃºsqueda mÃ¡ximo
+  string name_max = "Guy";
   int c3 = 0;
   Transferencia transferencia_max = block_chain.find_max_by_name(name_max);
   cout << "+++ Transferencia del monto maximo +++" << endl;
   cout << "#" << ++c3 << endl;
   cout << transferencia_max.toString() << endl;
 
-  // Búsqueda mínimo
-  string name_min = "Pepito";
+  // BÃºsqueda mÃ­nimo
+  string name_min = "Guy";
   int c4 = 0;
   Transferencia transferencia_min = block_chain.find_min_by_name(name_min);
   cout << "+++ Transferencia del monto minimo +++" << endl;
@@ -157,7 +172,7 @@ Usuario registrousuarios(){
 // 2. Registro de nueva transferencia
 void registroTransferencia(vector<Transferencia> &transferencias){
     /*do {
-        cout<<"¿Desea registrar usuario para la transferencia? (Y / N)"<<endl;
+        cout<<"Â¿Desea registrar usuario para la transferencia? (Y / N)"<<endl;
         cin>>char rpta;
         if(rpta == 'Y' || rpta == 'y'){
             registrousuarios(usuarios);
@@ -250,7 +265,7 @@ void BuscarRangoFecha(string startDate, string endDate) {
   }
 }
 
-// 8.Búsqueda monto máximo
+// 8.BÃºsqueda monto mÃ¡ximo
 void BuscarMontoMaximo(string name) {
   // string name_max = "Pepito";
   int c = 0;
@@ -261,7 +276,7 @@ void BuscarMontoMaximo(string name) {
   cout << transferencia_max.toString() << endl;
 }
 
-// 9.Búsqueda monto mínimo
+// 9.BÃºsqueda monto mÃ­nimo
 void BuscarMontoMinimo(string name) {
   // string name_min = "Pepito";
   int c = 0;
@@ -272,7 +287,7 @@ void BuscarMontoMinimo(string name) {
   cout << transferencia_min.toString() << endl;
 }
 
-// 10.Búsqueda por rango de monto
+// 10.BÃºsqueda por rango de monto
 void BuscarRangoMonto(long begin, long end) {
   // long begin = 700;
   // long end = 900;
@@ -328,10 +343,10 @@ int main() {
   cout << "4. Buscar por DNI" << endl;
   cout << "5. Buscar por nombre de emisor, receptor" << endl;
   cout << "6. Buscar por fecha" << endl;
-  cout << "7. Buscar según un rango de fecha" << endl;
-  cout << "8. Buscar el monto máximo según emisor, receptor" << endl;
-  cout << "9. Buscar el monto mínimo según emisor, receptor" << endl;
-  cout << "10. Buscar según un rango de monto" << endl;
+  cout << "7. Buscar segÃºn un rango de fecha" << endl;
+  cout << "8. Buscar el monto mÃ¡ximo segÃºn emisor, receptor" << endl;
+  cout << "9. Buscar el monto mÃ­nimo segÃºn emisor, receptor" << endl;
+  cout << "10. Buscar segÃºn un rango de monto" << endl;
   cout << "11. Salir" << endl;
   cout << "Ingrese opcion: ";
   cin >> opc;
@@ -352,7 +367,7 @@ switch (opc) {
   }
   case 4: {
     string dni;
-    cout << "Digite el número de DNI: ";
+    cout << "Digite el nÃºmero de DNI: ";
     cin >> dni;
     BuscarDNI(dni);
     break;
@@ -412,7 +427,7 @@ switch (opc) {
 char rpta;
 
 do{
-    cout<<"¿Desea realizar otra operacion? (Y / N)"<<endl;
+    cout<<"Â¿Desea realizar otra operacion? (Y / N)"<<endl;
     cin>>rpta;
     cout<<endl;
 
@@ -438,7 +453,7 @@ do{
       }
       case 4: {
         string dni;
-        cout << "Digite el número de DNI: ";
+        cout << "Digite el nÃºmero de DNI: ";
         cin >> dni;
         BuscarDNI(dni);
         break;
