@@ -7,6 +7,7 @@
 #include <functional>
 #include <time.h>
 #include "Transferencia.h"
+#include "SHA256.h"
 using namespace std;
 
 class Blockchain {
@@ -24,9 +25,10 @@ private:
 
 private:
   string getHashCode(string data){
-    std::hash<string> hash_fn;
-    size_t hash_code = hash_fn(data);
-    return to_string(hash_code);
+    SHA256 hash_code;
+    hash_code.update(data);
+    uint8_t* digest = hash_code.digest();
+    return SHA256::toString(digest);
   }
 
   string mining(int id){
@@ -180,7 +182,7 @@ public:
     return output;
   }
 
-  // Función para buscar los montos de transacciones en un rango de fechas
+  // FunciÃ³n para buscar los montos de transacciones en un rango de fechas
   vector<vector<Transferencia>> getTransactionsInRange(string startDate, string endDate) {
     vector<vector<Transferencia>> output;
     map<string, vector<Transferencia> >::iterator start;
@@ -194,7 +196,7 @@ public:
     return output;
     }
 
-  // Búsqueda por rango
+  // BÃºsqueda por rango
   vector<Transferencia> find_by_range(long begin, long end) {
     vector<Transferencia> output;
 
@@ -213,7 +215,7 @@ public:
     return output;
   }
 
-  // Búsqueda del mínimo por usuario
+  // BÃºsqueda del mÃ­nimo por usuario
   Transferencia find_max_by_name(string name) {
     Transferencia maxTrans;
     unordered_map<string, vector<Transferencia>>::iterator it =
@@ -230,7 +232,7 @@ public:
     return maxTrans;
   }
 
-  // Búsqueda del máximo por usuario
+  // BÃºsqueda del mÃ¡ximo por usuario
   Transferencia find_min_by_name(string name) {
     Transferencia minTrans;
     unordered_map<string, vector<Transferencia>>::iterator it =
