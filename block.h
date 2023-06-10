@@ -1,5 +1,5 @@
-#ifndef BLOCK_H_INCLUDED
-#define BLOCK_H_INCLUDED
+#ifndef BLOCK_H
+#define BLOCK_H
 
 #include <string>
 #include <vector>
@@ -28,4 +28,4 @@ struct Block {
     void minarBloque(int prefijo);
 };
 
-#endif // BLOCK_H_INCLUDED
+#endif  // BLOCK_H

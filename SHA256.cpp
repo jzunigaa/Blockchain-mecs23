@@ -20,7 +20,6 @@ std::string sha256(const std::string& input) {
 #include "sha256.h"
 #include "picosha2.h"
 #include <sstream>
-#include<string>
 
 std::string sha256(const std::string& input) {
     std::string hash;
