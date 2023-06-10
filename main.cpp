@@ -1,500 +1,224 @@
-/*#include <iostream>
-#include <vector>
-#include "Usuario.h"
-#include "Transferencia.h"
-#include "Blockchain.h"
-#define FOR(i, n) for(int i=0; i<n; i++)
-using namespace std;
-
-   // Authors: Proyecto 1 - Grupal - UTEC
-
-int main() {
-    Blockchain block_chain;
-    Usuario u1("Marvin", "Minsky", "71480315");
-    Usuario u2("Juan", "Perez", "12789345");
-    Usuario u3("Ana", "Holeman", "78955516");
-    Usuario u4("Pepito", "Grillo", "78934516");
-    Transferencia t1(u1, u2, 1000.0, "18-05-2023", "Barranco");
-    Transferencia t2(u1, u3, 200.0, "19-05-2023", "Surco");
-    Transferencia t3(u1, u2, 520.0, "21-05-2023", "San Isidro");
-    Transferencia t4(u3, u1, 890.0, "23-05-2023", "SJM");
-    Transferencia t5(u3, u4, 2500.0, "25-05-2023", "Magdalena");
-
-    vector<Transferencia> trans_list;
-    trans_list.push_back(t1);
-    trans_list.push_back(t2);
-    trans_list.push_back(t3);
-    trans_list.push_back(t4);
-    block_chain.add_block(trans_list);
-
-    vector<Transferencia> trans_list2;
-    trans_list2.push_back(t1);
-    trans_list2.push_back(t3);
-    block_chain.add_block(trans_list2);
-
-    vector<Transferencia> trans_list3;
-    trans_list3.push_back(t5);
-    trans_list3.push_back(t1);
-    block_chain.add_block(trans_list3);
-
-    //Mostrar Bloques
-    for(auto item : block_chain.block_list)
-        cout << item.second.getData() << endl;
-
-    //Busqueda por nombre (obtener Transferencias por nombre)
-    string name = "Ana";
-    int c = 0;
-    vector<Transferencia> transferencias = block_chain.find_by_name(name);
-    cout << "+++ Transferencias de " + name << " +++" << endl;
-    for(Transferencia t : transferencias){
-        cout << "#" << ++c << endl;
-        cout << t.toString() << endl;
-    }
-
-    //Busqueda por DNI (obtener Transferencias por DNI)
-    string dni = "78955516";
-    c = 0;
-    transferencias = block_chain.find_by_dni(dni);
-    cout << "+++ Transferencias del DNI: " + dni << " +++" << endl;
-    for(Transferencia t : transferencias){
-        cout << "#" << ++c << endl;
-        cout << t.toString() << endl;
-    }
-
-    //Busqueda por fecha (obtener Transferencias por fecha)
-    string date = "23-05-2023";
-    c = 0;
-    transferencias = block_chain.find_by_date(date);
-    cout << "+++ Transferencias en la fecha: " + date << " +++" << endl;
-    for(Transferencia t : transferencias){
-        cout << "#" << ++c << endl;
-        cout << t.toString() << endl;
-    }
-
-    //Busqueda por rango de fechas (obtener Transferencias en un rango de fechas)
-    string startDate = "19-05-2023";
-    string endDate = "23-05-2023";
-    c = 0;
-    vector<vector<Transferencia>> transferencias_list = block_chain.getTransactionsInRange(startDate,endDate);
-    cout << "+++ Transferencias realizadas entre " + startDate <<" y "<<endDate << " +++" << endl;
-    for(vector<Transferencia> t_list : transferencias_list){
-        for(Transferencia t : t_list){
-            cout << "#" << ++c << endl;
-            cout << t.toString() << endl;
-        }
-    }
-
-  // Búsqueda por rango de monto
-  long begin = 700;
-  long end = 900;
-  int c2 = 0;
-  vector<Transferencia> transferencias_rango =
-      block_chain.find_by_range(begin, end);
-  cout << "+++ Transferencias dentro del rango de monto [" << begin << ", "
-       << end << "] +++" << endl;
-  for (Transferencia t : transferencias_rango) {
-    cout << "#" << ++c2 << endl;
-    cout << t.toString() << endl;
-  }
-
-  // Búsqueda máximo
-  string name_max = "Pepito";
-  int c3 = 0;
-  Transferencia transferencia_max = block_chain.find_max_by_name(name_max);
-  cout << "+++ Transferencia del monto maximo +++" << endl;
-  cout << "#" << ++c3 << endl;
-  cout << transferencia_max.toString() << endl;
-
-  // Búsqueda mínimo
-  string name_min = "Pepito";
-  int c4 = 0;
-  Transferencia transferencia_min = block_chain.find_min_by_name(name_min);
-  cout << "+++ Transferencia del monto minimo +++" << endl;
-  cout << "#" << ++c4 << endl;
-  cout << transferencia_min.toString() << endl;
-
-    return 0;
-}
-*/
-
-#include "Blockchain.h"
-#include "Transferencia.h"
-#include "Usuario.h"
+#include "blockchain.h"
 #include <iostream>
-#include <vector>
-#define FOR(i, n) for (int i = 0; i < n; i++)
+#include<string>
+
 using namespace std;
-/*
-    Authors: Proyecto 1 - Grupal - UTEC
-*/
 
-Blockchain block_chain;
+void BuscarNombre(std::string nombre, Blockchain blockchain){
+  std::vector<Transaction> _transactions = blockchain.buscarPorNombre(nombre);
+      int c = 0;
+      std::cout << "\nTransacciones encontrados para '" << nombre << "':" << std::endl;
+      for (Transaction t : _transactions) {
+        std::cout << "#" << ++c << endl;
+        std::cout << t.toString() << endl;
+      }
+};
 
-// 1.Mostrar Bloques
-void MostrarBloques() {
-  //Blockchain block_chain;
-  for (auto item : block_chain.block_list)
-    cout << item.second.getData() << endl;
-}
-
-//Registro usuarios
-Usuario registrousuarios(){
-    string nomUsuario;
-    string apUsuario;
-    string dniUsuario;
-
-    cout<<"Nombre del usuario: ";
-    cin>>nomUsuario;
-    cout<<"apellido del usuario: ";
-    cin>>apUsuario;
-    cout<<"DNI del usuario";
-    cin>>dniUsuario;
-
-    Usuario u (nomUsuario,apUsuario,dniUsuario);
-    return u;
-}
-
-// 2. Registro de nueva transferencia
-void registroTransferencia(vector<Transferencia> &transferencias){
-    /*do {
-        cout<<"¿Desea registrar usuario para la transferencia? (Y / N)"<<endl;
-        cin>>char rpta;
-        if(rpta == 'Y' || rpta == 'y'){
-            registrousuarios(usuarios);
-        }
-    } while (rpta == 'Y' || rpta == 'y');
-    */
-    string fecha;
-    double monto;
-    string lugar;
-
-    cout<<"Ingrese los datos del emisor";
-    Usuario u1 = registrousuarios();
-
-    cout<<"Ingrese los datos del receptor";
-    Usuario u2 = registrousuarios();
-
-    cout<<"Ingrese los datos de la transferencia:"<<endl;
-    cout<<"Ingrese monto: ";
-    cin>>monto;
-
-    cout<<"\nIngrese fecha (dd-mm-yyyy): ";
-    cin>>fecha;
-
-    cout<<"\nIngrese lugar: ";
-    cin>>lugar;
-
-    Transferencia t(u1,u2,monto,fecha,lugar);
-    transferencias.push_back(t);
-
-    block_chain.add_block(transferencias);
-}
-
-
-// 3.
-
-// 4.Busqueda por DNI (obtener Transferencias por DNI)
-void BuscarDNI(string dni) {
-  // string dni = "78955516";
-  //Blockchain block_chain;
+void BuscarFecha(std::string fecha, Blockchain blockchain){
   int c = 0;
-  vector<Transferencia> transferencias = block_chain.find_by_dni(dni);
-  cout << "+++ Transferencias del DNI: " + dni << " +++" << endl;
-  for (Transferencia t : transferencias) {
+  vector<Transaction> transferencias = blockchain.buscarPorFecha(fecha);
+  cout << "+++ Transferencias en la fecha: " + fecha << " +++" << endl;
+  for (Transaction t : transferencias) {
     cout << "#" << ++c << endl;
     cout << t.toString() << endl;
   }
 }
 
-// 5.Busqueda por nombre (obtener Transferencias por nombre)
-void BuscarNombre(string name) {
-  // string name = "Ana";
-  //Blockchain block_chain;
+void BuscarRangofechas(std::string startDate, std::string endDate, Blockchain blockchain){
   int c = 0;
-  vector<Transferencia> transferencias = block_chain.find_by_name(name);
-  cout << "+++ Transferencias de " + name << " +++" << endl;
-  for (Transferencia t : transferencias) {
-    cout << "#" << ++c << endl;
-    cout << t.toString() << endl;
-  }
-}
-
-// 6.Busqueda por fecha (obtener Transferencias por fecha)
-void BuscarFecha(string date) {
-  // string date = "23-05-2023";
-  //Blockchain block_chain;
-  int c = 0;
-  vector<Transferencia> transferencias = block_chain.find_by_date(date);
-  cout << "+++ Transferencias en la fecha: " + date << " +++" << endl;
-  for (Transferencia t : transferencias) {
-    cout << "#" << ++c << endl;
-    cout << t.toString() << endl;
-  }
-}
-
-// 7.Busqueda por rango de fechas (obtener Transferencias en un rango de fechas)
-void BuscarRangoFecha(string startDate, string endDate) {
-  // string startDate = "19-05-2023";
-  // string endDate = "23-05-2023";
-  //Blockchain block_chain;
-  int c = 0;
-  vector<vector<Transferencia>> transferencias_list =
-      block_chain.getTransactionsInRange(startDate, endDate);
+  vector<vector<Transaction>> transferencias_list =
+      blockchain.buscarPorRangoDeFechas(startDate, endDate);
   cout << "+++ Transferencias realizadas entre " + startDate << " y " << endDate
        << " +++" << endl;
-  for (vector<Transferencia> t_list : transferencias_list) {
-    for (Transferencia t : t_list) {
+  for (vector<Transaction> t_list : transferencias_list) {
+    for (Transaction t : t_list) {
       cout << "#" << ++c << endl;
       cout << t.toString() << endl;
     }
   }
 }
 
-// 8.Búsqueda monto máximo
-void BuscarMontoMaximo(string name) {
-  // string name_max = "Pepito";
-  int c = 0;
-  //Blockchain block_chain;
-  Transferencia transferencia_max = block_chain.find_max_by_name(name);
-  cout << "+++ Transferencia del monto maximo +++" << endl;
-  cout << "#" << ++c << endl;
-  cout << transferencia_max.toString() << endl;
-}
-
-// 9.Búsqueda monto mínimo
-void BuscarMontoMinimo(string name) {
-  // string name_min = "Pepito";
-  int c = 0;
-  //Blockchain block_chain;
-  Transferencia transferencia_min = block_chain.find_min_by_name(name);
-  cout << "+++ Transferencia del monto minimo +++" << endl;
-  cout << "#" << ++c << endl;
-  cout << transferencia_min.toString() << endl;
-}
-
-// 10.Búsqueda por rango de monto
-void BuscarRangoMonto(long begin, long end) {
-  // long begin = 700;
-  // long end = 900;
-  int c = 0;
-  //Blockchain block_chain;
-  vector<Transferencia> transferencias_rango =
-      block_chain.find_by_range(begin, end);
-  cout << "+++ Transferencias dentro del rango de monto [" << begin << ", "
-       << end << "] +++" << endl;
-  for (Transferencia t : transferencias_rango) {
-    cout << "#" << ++c << endl;
-    cout << t.toString() << endl;
-  }
-}
-
 int main() {
+  Blockchain blockchain(4);
 
-  //Blockchain block_chain;
-  Usuario u1("Marvin", "Minsky", "71480315");
-  Usuario u2("Juan", "Perez", "12789345");
-  Usuario u3("Ana", "Holeman", "78955516");
-  Usuario u4("Pepito", "Grillo", "78934516");
-  Transferencia t1(u1, u2, 1000.0, "18-05-2023", "Barranco");
-  Transferencia t2(u1, u3, 200.0, "19-05-2023", "Surco");
-  Transferencia t3(u1, u2, 520.0, "21-05-2023", "San Isidro");
-  Transferencia t4(u3, u1, 890.0, "23-05-2023", "SJM");
-  Transferencia t5(u3, u4, 2500.0, "25-05-2023", "Magdalena");
+  int opcion;
+  char rpta;
 
-  vector<Transferencia> trans_list;
-  trans_list.push_back(t1);
-  trans_list.push_back(t2);
-  trans_list.push_back(t3);
-  trans_list.push_back(t4);
-  block_chain.add_block(trans_list);
+  do {
+    std::cout << std::endl;
+    // std::cout << "======= MENU =======\n";
+    std::cout << "======================================" << std::endl;
+    std::cout << "||\tBienvenido a su Cajero Virtual\t||" << std::endl;
+    std::cout << "======================================" << std::endl;
+    std::cout << "1. Agregar transacción\n";
+    std::cout << "2. Cargar desde CSV\n";
+    std::cout << "3. Imprimir blockchain\n";
+    std::cout << "4. Actualizar transacción\n";
+    std::cout << "5. Buscar por nombre\n";
+    std::cout << "6. Buscar por fecha\n";
+    std::cout << "7. Buscar por rango de fechas\n";
+    std::cout << "8. Buscar por monto máximo\n";
+    std::cout << "9. Buscar por monto mínimo\n";
+    std::cout << "10. Buscar por rango de monto\n";
+    std::cout << "11. Salir\n\n";
+    std::cout << "Ingrese una opción: ";
+    std::cin >> opcion;
+    std::cout << std::endl;
 
-  vector<Transferencia> trans_list2;
-  trans_list2.push_back(t1);
-  trans_list2.push_back(t3);
-  block_chain.add_block(trans_list2);
+    switch (opcion) {
+    case 1:
+      blockchain.ingresarRegistro();
+      break;
+    case 2:
+      blockchain.cargarDesdeCSV("transacciones.csv");
+      break;
+    case 3:
+      blockchain.imprimirBlockchain();
+      break;
+    case 4: {
+      int bloque;
+      std::cout << "Ingrese el bloque: ";
+      std::cin >> bloque;
+      int transaccion;
+      std::cout << "Ingrese el número de transacción: ";
+      std::cin >> transaccion;
+      std::string emisor;
+      std::cout << "Emisor: ";
+      std::cin >> emisor;
+      std::string receptor;
+      std::cout << "Receptor: ";
+      std::cin >> receptor;
+      double monto;
+      std::cout << "Monto: ";
+      std::cin >> monto;
+      std::string fecha;
+      std::cout << "Fecha: ";
+      std::cin >> fecha;
+      std::string ciudad;
+      std::cout << "Ciudad: ";
+      std::cin >> ciudad;
+      blockchain.actualizarRegistro(bloque, transaccion, emisor, receptor,
+                                    monto, fecha, ciudad);
 
-  vector<Transferencia> trans_list3;
-  trans_list3.push_back(t5);
-  trans_list3.push_back(t1);
-  block_chain.add_block(trans_list3);
-
-  int opc;
-  cout << "======================================"<<endl;
-  cout<<"||\tBienvenido a su Cajero Virtual\t||" << endl;
-  cout << "======================================"<<endl;
-  cout << "1. Mostrar todas las transacciones" << endl;
-  cout << "2. Ingresar nueva transferencia" << endl;
-  cout << "3. Cargar desde un archivo" << endl;
-  cout << "4. Buscar por DNI" << endl;
-  cout << "5. Buscar por nombre de emisor, receptor" << endl;
-  cout << "6. Buscar por fecha" << endl;
-  cout << "7. Buscar según un rango de fecha" << endl;
-  cout << "8. Buscar el monto máximo según emisor, receptor" << endl;
-  cout << "9. Buscar el monto mínimo según emisor, receptor" << endl;
-  cout << "10. Buscar según un rango de monto" << endl;
-  cout << "11. Salir" << endl;
-  cout << "Ingrese opcion: ";
-  cin >> opc;
-  cout << endl;
-
-switch (opc) {
-  case 1: {
-    MostrarBloques();
-    break;
-  }
-  case 2: {
-    registroTransferencia(trans_list);
-    break;
-  }
-  case 3: {
-    // PENDIENTE DE IMPLEMENTAR
-    break;
-  }
-  case 4: {
-    string dni;
-    cout << "Digite el número de DNI: ";
-    cin >> dni;
-    BuscarDNI(dni);
-    break;
-  }
-  case 5: {
-    string nombre;
-    cout << "Digite el nombre: ";
-    cin >> nombre;
-    BuscarNombre(nombre);
-    break;
-  }
-  case 6: {
-    string fecha;
-    cout << "Digite la fecha: ";
-    cin >> fecha;
-    BuscarFecha(fecha);
-    break;
-  }
-  case 7: {
-    string fecha_ini;
-    cout << "Digite la fecha de inicio: ";
-    cin >> fecha_ini;
-    string fecha_fin;
-    cout << "Digite la fecha de fin: ";
-    cin >> fecha_fin;
-    BuscarRangoFecha(fecha_ini, fecha_fin);
-    break;
-  }
-  case 8: {
-    string nombre;
-    cout << "Digite el nombre: ";
-    cin >> nombre;
-    BuscarMontoMinimo(nombre);
-    break;
-  }
-  case 9: {
-    string nombre;
-    cout << "Digite el nombre: ";
-    cin >> nombre;
-    BuscarMontoMaximo(nombre);
-    break;
-  }
-  case 10: {
-    long begin;
-    cout << "Digite el rango inferior del monto: ";
-    cin >> begin;
-    long end;
-    cout << "Digite el rango superior del monto: ";
-    cin >> end;
-    BuscarRangoMonto(begin, end);
-    break;
-  }
-  case 11:
-    break;
-}
-
-char rpta;
-
-do{
-    cout<<"¿Desea realizar otra operacion? (Y / N)"<<endl;
-    cin>>rpta;
-    cout<<endl;
-
-    if (rpta != 'Y'){
-        cout<<"El programa ha terminado...";
+      blockchain.imprimirBlockchain();
+      break;
     }
-    cout << "\n\nIngrese opcion: ";
-    cin >> opc;
-    cout << endl;
+    case 5: {
+      std::string nombre;
+      std::cout << "Ingrese el nombre: ";
+      std::cin.ignore();
+      std::getline(std::cin,nombre);
+      BuscarNombre(nombre, blockchain);
+      std::cout << std::endl;
+      break;
+    }
+    case 6:{
+      std::string fecha;
+      std::cout<<"Ingrese fecha: ";
+      std::cin.ignore();
+      std::getline(std::cin, fecha);
+      BuscarFecha(fecha, blockchain);
+      std::cout << std::endl;
+      break;
+    }
+    case 7: {
+      std::string fechaInicio, fechaFin;
+      std::cout << "Ingrese la fecha de inicio (YYYY-MM-DD): ";
+      std::cin.ignore();
+      std::getline(std::cin, fechaInicio);
+      std::cout << "Ingrese la fecha de fin (YYYY-MM-DD): ";
+      std::getline(std::cin, fechaFin);
+      BuscarRangofechas(fechaInicio,fechaFin,blockchain);
+      std::cout << std::endl;
+      break;
+    }
+    case 8: {
+      double montoMax;
+      int i = 0;
+      std::cout << "Ingrese el monto máximo: ";
+      std::cin >> montoMax;
+      std::vector<Transaction> bloquesMontoMax =
+          blockchain.buscarPorMontoMaximo(montoMax);
+      std::cout << "Bloques encontrados con monto máximo de " << montoMax << ":"
+                << std::endl;
+      for (const Transaction &transaccion : bloquesMontoMax) {
+        std::cout << "\nTransacción #" << i
+                << std::endl;
+        std::cout << "Fecha: " << transaccion.fecha << std::endl;
+        std::cout << "Fecha: " << transaccion.fecha << std::endl;
+        std::cout << "Emisor: " << transaccion.emisor << std::endl;
+        std::cout << "Receptor: " << transaccion.receptor << std::endl;
+        std::cout << "Monto: " << transaccion.monto << std::endl;
+        std::cout << "Ciudad: " << transaccion.ciudad << std::endl << "\n";
+        //std::cout << std::endl;
+        i++;
+      }
+      std::cout << std::endl;
+      break;
+    }
+    case 9: {
+      double montoMin;
+      int i = 0;
+      std::cout << "Ingrese el monto mínimo: ";
+      std::cin >> montoMin;
+      std::vector<Transaction> bloquesMontoMin =
+          blockchain.buscarPorMontoMinimo(montoMin);
+      std::cout << "Bloques encontrados con monto mínimo de " << montoMin << ":"
+                << std::endl;
+      for (const Transaction &transaccion : bloquesMontoMin) {
+        std::cout << "\nTransacción #" << i
+                << std::endl;
+        std::cout << "Fecha: " << transaccion.fecha << std::endl;
+        std::cout << "Fecha: " << transaccion.fecha << std::endl;
+        std::cout << "Emisor: " << transaccion.emisor << std::endl;
+        std::cout << "Receptor: " << transaccion.receptor << std::endl;
+        std::cout << "Monto: " << transaccion.monto << std::endl;
+        std::cout << "Ciudad: " << transaccion.ciudad << std::endl << "\n";
+        //std::cout << std::endl;
+        i++;
+      }
+      std::cout << std::endl;
+      break;
+    }
+    case 10: {
+      double montoMin, montoMax;
+      int i = 0;
+      std::cout << "Ingrese el monto mínimo: ";
+      std::cin >> montoMin;
+      std::cout << "Ingrese el monto máximo: ";
+      std::cin >> montoMax;
+      std::vector<Transaction> bloquesRangoMonto =
+          blockchain.buscarPorRangoDeMonto(montoMin, montoMax);
+      std::cout << "Bloques encontrados para el rango de monto [" << montoMin
+                << ", " << montoMax << "]:" << std::endl;
+      for (const Transaction &transaccion : bloquesRangoMonto) {
+        std::cout << "\nTransacción #" << i
+                << std::endl;
+        std::cout << "Fecha: " << transaccion.fecha << std::endl;
+        std::cout << "Fecha: " << transaccion.fecha << std::endl;
+        std::cout << "Emisor: " << transaccion.emisor << std::endl;
+        std::cout << "Receptor: " << transaccion.receptor << std::endl;
+        std::cout << "Monto: " << transaccion.monto << std::endl;
+        std::cout << "Ciudad: " << transaccion.ciudad << std::endl << "\n";
+        //std::cout << std::endl;
+        i++;
+      }
+      std::cout << std::endl;
+      break;
+    }
+    case 11:
+      std::cout << "Saliendo..." << std::endl;
+      break;
+    default:
+      std::cout << "Opción inválida. Intente nuevamente." << std::endl;
+    }
 
-    switch (opc) {
-      case 1: {
-        MostrarBloques();
-        break;
-      }
-      case 2: {
-        // PENDIENTE DE IMPLEMENTAR
-        break;
-      }
-      case 3: {
-        // PENDIENTE DE IMPLEMENTAR
-        break;
-      }
-      case 4: {
-        string dni;
-        cout << "Digite el número de DNI: ";
-        cin >> dni;
-        BuscarDNI(dni);
-        break;
-      }
-      case 5: {
-        string nombre;
-        cout << "Digite el nombre: ";
-        cin >> nombre;
-        BuscarNombre(nombre);
-        break;
-      }
-      case 6: {
-        string fecha;
-        cout << "Digite la fecha: ";
-        cin >> fecha;
-        BuscarFecha(fecha);
-        break;
-      }
-      case 7: {
-        string fecha_ini;
-        cout << "Digite la fecha de inicio: ";
-        cin >> fecha_ini;
-        string fecha_fin;
-        cout << "Digite la fecha de fin: ";
-        cin >> fecha_fin;
-        BuscarRangoFecha(fecha_ini, fecha_fin);
-        break;
-      }
-      case 8: {
-        string nombre;
-        cout << "Digite el nombre: ";
-        cin >> nombre;
-        BuscarMontoMinimo(nombre);
-        break;
-      }
-      case 9: {
-        string nombre;
-        cout << "Digite el nombre: ";
-        cin >> nombre;
-        BuscarMontoMaximo(nombre);
-        break;
-      }
-      case 10: {
-        long begin;
-        cout << "Digite el rango inferior del monto: ";
-        cin >> begin;
-        long end;
-        cout << "Digite el rango superior del monto: ";
-        cin >> end;
-        BuscarRangoMonto(begin, end);
-        break;
-      }
-      case 11:
-        break;
-}
-} while (rpta == 'Y');
+    do{
+      cout << "\n¿Desea realizar otra operacion? (Y / N)  ";
+      cin >> rpta;
+    }while (rpta != 'Y' && rpta != 'N');
+
+  } while (rpta == 'Y');
 
   return 0;
 }

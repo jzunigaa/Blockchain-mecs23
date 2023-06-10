@@ -1,0 +1,65 @@
+std::vector<Transaction> Blockchain::buscarPorMontoMaximo(double montoMax) {
+  std::vector<Transaction> transaccionesEncontradas;
+  buscarPorMontoMaximoAux(bstRoot, montoMax, transaccionesEncontradas);
+  return transaccionesEncontradas;
+}
+
+void Blockchain::buscarPorMontoMaximoAux(BSTNode* node, double montoMax, std::vector<Transaction>& transaccionesEncontradas) {
+  if (node == nullptr) {
+    return;
+  }
+
+  buscarPorMontoMaximoAux(node->left, montoMax, transaccionesEncontradas);
+
+  for (const Transaction& transaction : node->block.transactions) {
+    if (transaction.monto <= montoMax) {
+      transaccionesEncontradas.push_back(transaction);
+    }
+  }
+
+  buscarPorMontoMaximoAux(node->right, montoMax, transaccionesEncontradas);
+}
+
+std::vector<Transaction> Blockchain::buscarPorMontoMinimo(double montoMin) {
+  std::vector<Transaction> transaccionesEncontradas;
+  buscarPorMontoMinimoAux(bstRoot, montoMin, transaccionesEncontradas);
+  return transaccionesEncontradas;
+}
+
+void Blockchain::buscarPorMontoMinimoAux(BSTNode* node, double montoMin, std::vector<Transaction>& transaccionesEncontradas) {
+  if (node == nullptr) {
+    return;
+  }
+
+  buscarPorMontoMinimoAux(node->left, montoMin, transaccionesEncontradas);
+
+  for (const Transaction& transaction : node->block.transactions) {
+    if (transaction.monto >= montoMin) {
+      transaccionesEncontradas.push_back(transaction);
+    }
+  }
+
+  buscarPorMontoMinimoAux(node->right, montoMin, transaccionesEncontradas);
+}
+
+std::vector<Transaction> Blockchain::buscarPorRangoDeMonto(double montoMin, double montoMax) {
+  std::vector<Transaction> transaccionesEncontradas;
+  buscarPorRangoDeMontoAux(bstRoot, montoMin, montoMax, transaccionesEncontradas);
+  return transaccionesEncontradas;
+}
+
+void Blockchain::buscarPorRangoDeMontoAux(BSTNode* node, double montoMin, double montoMax, std::vector<Transaction>& transaccionesEncontradas) {
+  if (node == nullptr) {
+    return;
+  }
+
+  buscarPorRangoDeMontoAux(node->left, montoMin, montoMax, transaccionesEncontradas);
+
+  for (const Transaction& transaction : node->block.transactions) {
+    if (transaction.monto >= montoMin && transaction.monto <= montoMax) {
+      transaccionesEncontradas.push_back(transaction);
+    }
+  }
+
+  buscarPorRangoDeMontoAux(node->right, montoMin, montoMax, transaccionesEncontradas);
+}
