@@ -2,21 +2,21 @@
 
 Proyecto 01 del curso Estructuras de Datos, Maestría en Computer Science - UTEC 2023.
 
-#### 1. Introducción
+### 1. Introducción
 ------------
 El presente proyecto se encuentra desarrollado en C++ y tiene como objetivo principal simular un sistema de transacciones bancarias simples que almacenan la información al interior de una blockchain y otras estructuras que permitan la búsqueda eficiente de los datos almacenados...
 
 
-#### 2. Descripción del caso de estudio planteado
+### 2. Descripción del caso de estudio planteado
 ------------
 El proyecto requiere un sistema que permita registrar de forma segura y sencilla, transacciones que almacenen datos como: el nombre del emisor, nombre del receptor, monto de la transacción, fecha de la transacción y lugar de la transacción. Se requiere implementar una estructura blockchain que brinde seguridad al sistema y múltiples estructuras de indexación para la recuperación eficiente de informaicón. Estas transacciones se agrupan en bloques y se registran en la blockchain.
 
-#### 3. Importancia del Blockchain en el dominio de datos elegido
+### 3. Importancia del Blockchain en el dominio de datos elegido
 ------------
 El blockchain es importante en el dominio de transferencia de dinero porque proporciona una forma segura y confiable de registrar las transacciones. La estructura descentralizada (no se aplicó en este proyecto) y las técnicas de encriptación de la blockchain garantizan la integridad de los datos y evitan la manipulación de las transacciones.
 
 
-#### 4. Explicación de la estructura de datos del Blockchain y la estrategia para asegurar la integridad de su contenido
+### 4. Explicación de la estructura de datos del Blockchain y la estrategia para asegurar la integridad de su contenido
 ------------
 La estructura de datos del blockchain se implementa utilizando una **lista cirucular doblemente enlazada** de bloques. Ésta se utiliza para mantener un orden secuencial de los bloques en el Blockchain, donde cada nodo de la lista enlazada contiene un bloque y enlaces al nodo anterior (prev) y siguiente (next). Además, el uso de head y tail en la lista enlazada brinda ventajas en términos de eficiencia y rendimiento. Al tener referencias directas al inicio y al final de la lista, se pueden realizar operaciones de inserción y eliminación de manera más eficiente, ya que no es necesario recorrer la lista completa en cada operación.
 
@@ -125,7 +125,7 @@ void Blockchain::recalcularHashesCascada(ListNode *node) {
 ```
 
 
-#### 5. Explicación de cada una de las estructuras de datos utilizada en su aplicación de acuerdo a los criterios de búsqueda
+### 5. Explicación de cada una de las estructuras de datos utilizada en su aplicación de acuerdo a los criterios de búsqueda
 ------------
 Se utilizan estructuras de datos para permitir búsquedas eficientes de bloques de transacciones en el blockchain basadas en diferentes criterios, como nombre, rango de fechas, monto máximo, etc. Las estructuras utilizadas son tablas hash, árbol binario de búsqueda.
 
@@ -337,7 +337,7 @@ void Blockchain::buscarPorRangoDeMontoAux(BSTNode* node, double montoMin, double
 }
 ```
 
-#### 6. Análisis de la complejidad en notación Big O de los métodos del Blockchain
+### 6. Análisis de la complejidad en notación Big O de los métodos del Blockchain
 ------------
 La complejidad en notación Big O de los métodos del Blockchain se puede resumir de la siguiente manera:
 
@@ -392,7 +392,7 @@ O(log n), el valor mínimo se encuentra en el nodo más a la derecha del árbol.
 **- buscarPorRangoDeMonto**
 O(log n), en promedio requerirá examinar un número de nodos proporcional a la altura del árbol, lo cual es logarítmico en relación al número total de nodos.
 
-#### 7. Conclusiones
+### 7. Conclusiones
 ------------
 - Blockchain proporciona un alto nivel de seguridad debido a su estructura y a la criptografía utilizada para asegurar las transacciones. Cada bloque contiene un hash que enlaza con el bloque anterior, lo que dificulta la manipulación de los datos.
 
@@ -400,7 +400,7 @@ O(log n), en promedio requerirá examinar un número de nodos proporcional a la 
 
 - Se pueden implementar operaciones eficientes para buscar transacciones por emisor, receptor, rango de fechas y monto máximo. Esto facilita la búsqueda y el análisis de transacciones específicas en la cadena de bloques.
 
-#### 8. Referencias bibliográficas
+### 8. Referencias bibliográficas
 ------------
 - IBM - ¿Tecnología Blockchain?
 https://www.ibm.com/es-es/topics/blockchain
