@@ -5,7 +5,7 @@
 
 [TOC]
 ## Introducción
-El presente proyecto se encuentra desarrollado en c++ y tiene como objetivo principal el simular un sistema de transacciones bancarias simples que almacenan la información al interior de una blockchain y otras estructuras que permitan la búsqueda eficiente de los datos almacenados.
+El presente proyecto se encuentra desarrollado en c++ y tiene como objetivo principal el simular un sistema de transacciones bancarias simples que almacenan la información al interior de una blockchain y otras estructuras que permitan la búsqueda eficiente de los datos almacenados...
 
 ## Descripción del caso de estudio
 El proyecto requiere un sistema que permita registrar de forma segura transacciones sencillas que almacenen datos como: el nombre del emisor, nombre del receptor, monto de la transacción, fecha de la transacción y lugar de la transacción. Se requiere implementar una estructura blockchain que brinde seguridad al sistema y multiples estructuras de indexación para la recuperación eficiente de informaicón.
