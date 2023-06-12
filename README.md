@@ -131,7 +131,7 @@ Se utilizan estructuras de datos para permitir búsquedas eficientes de bloques 
 
 #### Búsqueda por nombre
 
-Para realizar la búsqueda por nomres primero se indexan los datos en una tabla hash que usa como key el nombre de la persona y como value un vector de transacciones.
+Para realizar la búsqueda por nombres primero se indexan los datos en una tabla hash que usa como key el nombre de la persona y como value un vector de transacciones.
 Para el caso del proyecto la persona puede ser un emisor, un receptor o ambos (en diferentes transacciones).
 En el siguiente código se muestra el método para indexar los datos en la tabla hash.
 
