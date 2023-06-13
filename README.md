@@ -375,13 +375,13 @@ O(log n), donde n es el número de nodos en el árbol.
 O(m), donde m es el número de bloques en la cadena.
 
 **- buscarPorNombre**
-O(1) en el mejor caso y O(n) en el peor caso, donde n es el número de transacciones asociadas al nombre especificado.
+O(1) debido a que es un hash table.
 
 **- buscarPorFecha**
-O(1) en el mejor caso y O(n) en el peor caso, donde n es el número de transacciones asociadas a la fecha especificada.
+O(lgn) donde n es el número de elementos en el arbol.
 
 **- buscarPorRangoDeFecha**
-O(log n), donde n es el número total de fechas en el map.
+O(lg n), donde n es el número total de fechas en el map.
 
 **- buscarPorMontoMáximo**
 O(log n), el valor máximo se encuentra en el nodo más a la derecha del árbol.
